@@ -1,0 +1,16 @@
+{% extends 'users/base.html' %}
+
+{% block form %}
+<form action="" method="post" id="form" class="auth-form__body">
+    {% csrf_token %}
+    <div class="auth-form-wrapper">
+        <div class="auth-form__item">
+            {{ form.email }}
+        </div>
+        <div class="auth-form__item">
+            {{ form.password }}
+        </div>
+    </div>
+    <button type="submit" class="form__button">Sign In</button>
+</form>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'users/base.html' %}
+
+{% block form %}
+<form action="#" method="post" id="form" class="auth-form__body">
+    {% csrf_token %}
+    <div class="auth-form-wrapper">
+        <div class="auth-form__item">
+            {{ form.first_name }}
+        </div>
+        <div class="auth-form__item">
+            {{ form.last_name }}
+        </div>
+        <div class="auth-form__item">
+            {{ form.email }}
+        </div>
+        <div class="auth-form__item">
+            {{ form.password1 }}
+        </div>
+        <div class="auth-form__item">
+            {{ form.password2 }}
+        </div>
+    </div>
+    <button type="submit" class="form__button">Create Account</button>
+</form>
+{% endblock %}
