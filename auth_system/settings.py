@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'users',
     'access',
+    'mock_business',
 ]
 
 MIDDLEWARE = [
