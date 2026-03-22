@@ -23,3 +23,10 @@ def has_permission(user, element_code, action):
             return True
 
     return False
+
+
+def is_admin(user):
+    return UserRole.objects.filter(
+        user=user,
+        role__name="admin"
+    ).exists()
