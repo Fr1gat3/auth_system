@@ -1,8 +1,9 @@
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from .serializers import RegisterSerializer, LoginSerializer
+from .serializers import RegisterSerializer, LoginSerializer, UserSerializer, UserUpdateSerializer
 from .utils import create_access_token
 
 
@@ -28,4 +29,31 @@ class LoginView(APIView):
         return Response(
             {'access_token': token},
             status=status.HTTP_200_OK,
+        )
+
+
+class UserMeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response(UserSerializer(request.user).data)
+
+    def put(self, request):
+        serializer = UserUpdateSerializer(
+            request.user,
+            data=request.data,
+            partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(UserSerializer(request.user).data)
+
+    def delete(self, request):
+        request.user.is_active = False
+        request.user.save()
+
+        return Response(
+            {"detail": "User deactivated"},
+            status=status.HTTP_204_NO_CONTENT,
         )

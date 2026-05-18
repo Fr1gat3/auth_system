@@ -31,3 +31,29 @@ class LoginSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("id", "email", "first_name", "last_name")
+
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=False)
+
+    class Meta:
+        model = User
+        fields = ("first_name", "last_name", "password")
+
+    def update(self, instance, validated_data):
+        password = validated_data.pop("password", None)
+
+        if password:
+            instance.password_hash = hash_password(password)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()
+        return instance
